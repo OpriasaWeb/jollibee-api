@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const menuController = require("../controller/menu.controller")
+const menuController = require("../controllers/menu.controller")
 
 router.get("/", menuController.get)
 router.get("/:menu_id", menuController.getByID)
