@@ -2,34 +2,49 @@ const pool = require('../database/index')
 
 module.exports = {
   createUser: (data, callBack) => {
-    pool.query(
-      `INSERT INTO restaurant_menu.restaurant_registration (fullname, email, password, age, number, date_added) VALUES (?, ?, ?, ?, ?, NOW())`,
-      [
-        data.fullname,
-        data.email,
-        data.password,
-        data.age,
-        data.number,
-      ],
-      (error, results, fields) => {
-        if(error){
-          callBack(error)
+    try {
+      pool.query(
+        `INSERT INTO restaurant_menu.restaurant_registration (fullname, email, password, age, number, date_added) VALUES (?, ?, ?, ?, ?, NOW())`,
+        [
+          data.fullname,
+          data.email,
+          data.password,
+          data.age,
+          data.number,
+        ],
+        (error, results, fields) => {
+          if(error){
+            callBack(error)
+          }
+          return callBack(null, results)
         }
-        return callBack(null, results)
-      }
-    )
+      )
+    } catch (error) {
+      console.log(error)
+      res.json({
+        state: "error"
+      })
+    }
   },
   getAllUsers: callBack => {
-    pool.query(
-      `SELECT * FROM restaurant_menu.restaurant_registration`,
-      [],
-      (error, results, fields) => {
-        if(error){
-          callBack(error)
+    try {
+      pool.query(
+        `SELECT * FROM restaurant_menu.restaurant_registration`,
+        [],
+        (error, results, fields) => {
+          if(error){
+            console.log(error)
+            callBack(error)
+          }
+          return callBack(null, results)
         }
-        return callBack(null, results[0])
-      }
-    )
+      )
+    } catch (error) {
+      console.log(error)
+      res.json({
+        state: "error"
+      })
+    }
   },
   getUserByID: (id, callBack) => {
     pool.query(
