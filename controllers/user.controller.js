@@ -12,36 +12,50 @@ const { sign } = require("jsonwebtoken");
 
 module.exports = {
   createUser: (req, res) => {
-    const body = req.body
-    const salt = genSaltSync(10)
-    body.password = hashSync(body.password, salt)
-    createUser(body, (err, results) => {
-      if(err){
-        console.log(err)
-        return res.status(500).json({
-          success: 0,
-          message: "Database connection error"
-        });
-      }
-      return res.json({
-        success: 1,
-        data: results
-      })
-    })
-  },
-  getAllUsers: (req, res) => {
-    getAllUsers((err, results) => {
-      if(err){
-        console.log(err)
+    try {
+      const body = req.body
+      const salt = genSaltSync(10)
+      body.password = hashSync(body.password, salt)
+      createUser(body, (err, results) => {
+        if(err){
+          console.log(err)
+          return res.status(500).json({
+            success: 0,
+            message: "Database connection error"
+          });
+        }
         return res.json({
-          success: 0
+          success: 1,
+          data: results
         })
-      }
-      console.log(results)
-      return res.json({
-        success: 1,
-        data: results
       })
-    })
+    } catch (error) {
+      console.log(error)
+      res.json({
+        state: "error"
+      })
+    }
+  },
+  getUsers: (req, res) => {
+    try {
+      getAllUsers((err, results) => {
+        if(err){
+          console.log(err)
+          return res.json({
+            success: 0
+          })
+        }
+        console.log(results)
+        return res.json({
+          success: 1,
+          data: results
+        })
+      })
+    } catch (error) {
+      console.log(error)
+      res.json({
+        state: "error"
+      })
+    }
   }
 }
