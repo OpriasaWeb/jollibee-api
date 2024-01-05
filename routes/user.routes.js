@@ -3,10 +3,10 @@ const router = express.Router();
 const { checkToken } = require("../auth/token_validation")
 const {
   createUser,
-  getAllUsers
+  getUsers
 } = require("../controllers/user.controller")
 
 router.post("/", createUser)
-router.get("/", getAllUsers)
+router.get("/", getUsers)
 
 module.exports = router
