@@ -6,14 +6,17 @@ require('dotenv').config()
 const userRouter = require("./routes/user.routes")
 const menuRouter = require("./routes/menu.routes")
 const employeeRouter = require("./routes/employee.routes")
-
-app.use(express.urlencoded({ extended:false }))
-
-app.use("/restapi/restaurant/user", userRouter)
-app.use("/restapi/restaurant/menu", menuRouter)
-app.use("/restapi/restaurant/employee", employeeRouter)
+const branchRouter = require("./routes/branches.routes")
 
 app.use(express.json())
+app.use(express.urlencoded({ extended:false }))
+
+app.use("/restapi/jollibee/user", userRouter)
+app.use("/restapi/jollibee/menu", menuRouter)
+app.use("/restapi/jollibee/employee", employeeRouter)
+app.use("/restapi/jollibee/branch", branchRouter)
+
+
 
 const PORT = process.env.PORT || 3000
 
