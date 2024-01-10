@@ -1,5 +1,5 @@
 const { hashSync, genSaltSync, compareSync } = require("bcrypt")
-const { sign } = require("jsonwebtoken")
+const jwt = require("jsonwebtoken")
 
 const pool = require("../database/index")
 
@@ -45,7 +45,7 @@ const userController = {
         const result = compareSync(password, user.password);
 
         if (result) {
-          const jsontoken = sign({ result: user }, user.password, {
+          const jsontoken = jwt.sign({ result: user }, "qwe1234", {
             expiresIn: "1h"
           });
           return res.json({
@@ -54,7 +54,7 @@ const userController = {
             token: jsontoken
           });
         } else {
-          return res.json({
+          return res.status(401).json({
             success: 2,
             message: "Invalid email or password"
           });
