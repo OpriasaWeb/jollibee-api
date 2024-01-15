@@ -3,7 +3,7 @@ const pool = require('../database/index')
 const employeeController = {
   getEmployee: async (req, res) => {
     try {
-      const [rows, fields] = await pool.query("SELECT * FROM restaurant_menu.employee")
+      const [rows, fields] = await pool.query("SELECT fullname, rp.position_name, age, number, email, branch_id, years_of_service FROM employee e LEFT JOIN ref_position rp ON e.position_id = rp.position_id")
       res.json({
         data: rows
       })
@@ -17,7 +17,7 @@ const employeeController = {
   getEmployeeByID: async (req, res) => {
     try {
       const { employee_id } = req.params
-      const sql = "SELECT * FROM restaurant_menu.employee WHERE employee_id = ?"
+      const sql = "SELECT fullname, rp.position_name, age, number, email, branch_id, years_of_service FROM employee e LEFT JOIN ref_position rp ON e.position_id = rp.position_id WHERE employee_id = ?"
       const [rows, fields] = await pool.query(sql, [employee_id])
       res.json({
         data: rows
@@ -32,7 +32,7 @@ const employeeController = {
   addEmployee: async (req, res) => {
     try {
       const { fullname, position, age, number, email, branchid, years } = req.body
-      const sql = `INSERT INTO restaurant_menu.employee (fullname, position, age, number, email, branch_id, years_of_service, date_started) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())`
+      const sql = `INSERT INTO restaurant_menu.employee (fullname, position_id, age, number, email, branch_id, years_of_service, date_started) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())`
       const [rows, fields] = await pool.query(sql, [fullname, position, age, number, email, branchid, years])
       res.json({ 
         data: rows
