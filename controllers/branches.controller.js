@@ -28,6 +28,21 @@ const branchesController = {
         state: "error"
       })
     }
+  },
+  addBranch: async (req, res) => {
+    try {
+      const { branch_name, branch_address, branch_telephone, branch_number, branch_employees } = req.body
+      const sql = `INSERT INTO restaurant_menu.jollibee_branch (branch_name, branch_address, branch_telephone, branch_number, branch_date_established, branch_employees) VALUES (?, ?, ?, ?, NOW(), ?)`
+      const [rows, fields] = await pool.query(sql, [branch_name, branch_address, branch_telephone, branch_number, branch_employees])
+      res.json({
+        data: rows
+      })
+    } catch (error) {
+      console.log(error)
+      res.json({
+        state: "error"
+      })
+    }
   }
 }
 
