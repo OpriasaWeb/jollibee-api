@@ -3,7 +3,7 @@ const pool = require('../database/index')
 const employeeController = {
   getEmployee: async (req, res) => {
     try {
-      const [rows, fields] = await pool.query("SELECT fullname, rp.position_name, age, number, email, branch_id, years_of_service FROM employee e LEFT JOIN ref_position rp ON e.position_id = rp.position_id")
+      const [rows, fields] = await pool.query("SELECT fullname, rp.position_name, age, number, email, jb.branch_name, years_of_service FROM employee e LEFT JOIN ref_position rp ON e.position_id = rp.position_id LEFT JOIN jollibee_branch jb ON e.branch_id = jb.branch_id")
       res.json({
         data: rows
       })
@@ -17,7 +17,11 @@ const employeeController = {
   getEmployeeByID: async (req, res) => {
     try {
       const { employee_id } = req.params
-      const sql = "SELECT fullname, rp.position_name, age, number, email, branch_id, years_of_service FROM employee e LEFT JOIN ref_position rp ON e.position_id = rp.position_id WHERE employee_id = ?"
+      const sql = "SELECT fullname, rp.position_name, age, number, email, jb.branch_name, years_of_service "
+                  + "FROM employee e "
+                  + "LEFT JOIN ref_position rp ON e.position_id = rp.position_id "
+                  + "LEFT JOIN jollibee_branch jb ON e.branch_id = jb.branch_id "
+                  + "WHERE employee_id = ?"
       const [rows, fields] = await pool.query(sql, [employee_id])
       res.json({
         data: rows
