@@ -16,7 +16,19 @@ const refPositionsController = {
       })
     }
   },
-
+  getAllPositions: async (req, res) => {
+    try {
+      const [rows, fields] = await pool.query("SELECT * FROM restaurant_menu.ref_position")
+      res.json({
+        data: rows
+      })
+    } catch (error) {
+      console.log(error)
+      res.json({
+        state: "error"
+      })
+    }
+  },
   
 }
 
