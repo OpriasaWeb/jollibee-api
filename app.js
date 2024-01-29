@@ -18,6 +18,7 @@ const refNoodlesPasta = require('./routes/menu_reference/ref_noodles_pasta.route
 const refRiceMeal = require('./routes/menu_reference/ref_ricemeals.routes')
 const refSideItem = require('./routes/menu_reference/ref_sideitems.routes')
 const refSpecialItem = require('./routes/menu_reference/ref_specialitem.routes')
+const orderRouter = require('./routes/order.routes')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended:false }))
@@ -37,6 +38,7 @@ app.use("/restapi/jollibee/menu/pasta", refNoodlesPasta)
 app.use("/restapi/jollibee/menu/ricemeal", refRiceMeal)
 app.use("/restapi/jollibee/menu/side", refSideItem)
 app.use("/restapi/jollibee/menu/special", refSpecialItem)
+app.use("/restapi/jollibee/order", orderRouter)
 
 
 const PORT = process.env.PORT || 3000
